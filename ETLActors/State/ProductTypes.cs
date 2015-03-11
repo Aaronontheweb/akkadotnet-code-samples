@@ -1,6 +1,6 @@
 using System;
 
-namespace ETLActors
+namespace ETLActors.State
 {
     public enum ProductTypes { Laptop, Desktop, Phone, Watch, Tablet }
 

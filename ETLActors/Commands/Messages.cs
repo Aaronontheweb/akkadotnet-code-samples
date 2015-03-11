@@ -1,7 +1,6 @@
-﻿using System.Collections;
-using System.Net;
+﻿using ETLActors.State;
 
-namespace ETLActors
+namespace ETLActors.Commands
 {
     #region Payment messages
 
@@ -44,28 +43,16 @@ namespace ETLActors
 
     #region View messages
     /// <summary>
-    /// Base class for <see cref="View"/>-related messages.
-    /// </summary>
-    public class ViewMessage
-    {
-        public IPAddress IpAddress { get; private set; }
-        public ProductType ProductType { get; private set; }
-
-        public ViewMessage(IPAddress ipAddress, ProductType productType)
-        {
-            IpAddress = ipAddress;
-            ProductType = productType;
-        }
-    }
-
-    /// <summary>
     /// Signals to log a pageview for a given <see cref="ProductType" />.
     /// </summary>
-    public class LogPageview : ViewMessage
+    public class LogPageview
     {
-        public LogPageview(IPAddress ipAddress, ProductType productType) : base(ipAddress, productType)
+        public LogPageview(Pageview pageview)
         {
+            Pageview = pageview;
         }
+
+        public Pageview Pageview { get; private set; }
     }
     #endregion
 

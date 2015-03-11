@@ -1,6 +1,6 @@
 using System;
 
-namespace ETLActors
+namespace ETLActors.State
 {
     public class Order : IDataEvent
     {

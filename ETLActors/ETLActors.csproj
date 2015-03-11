@@ -51,14 +51,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Address.cs" />
-    <Compile Include="ProductTypes.cs" />
-    <Compile Include="Customer.cs" />
-    <Compile Include="Messages.cs" />
-    <Compile Include="Interfaces.cs" />
-    <Compile Include="MarketingCampaign.cs" />
-    <Compile Include="Order.cs" />
-    <Compile Include="View.cs" />
-    <Compile Include="Payment.cs" />
+    <Compile Include="State\ProductTypes.cs" />
+    <Compile Include="State\Customer.cs" />
+    <Compile Include="Commands\Messages.cs" />
+    <Compile Include="State\Interfaces.cs" />
+    <Compile Include="State\MarketingCampaign.cs" />
+    <Compile Include="State\Order.cs" />
+    <Compile Include="State\View.cs" />
+    <Compile Include="State\Payment.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace ETLActors
+namespace ETLActors.State
 {
     public class Customer : IIdentifiable {
         public Customer(Guid id)
