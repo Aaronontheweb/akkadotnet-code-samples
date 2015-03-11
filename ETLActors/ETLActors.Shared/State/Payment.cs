@@ -1,8 +1,11 @@
 using System;
+using Newtonsoft.Json;
 
 namespace ETLActors.Shared.State
 {
     public class Payment : IDataEvent {
+
+        [JsonConstructor]
         public Payment(decimal amount, long timestamp, Guid id, Guid orderId)
         {
             Id = id;

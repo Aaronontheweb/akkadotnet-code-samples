@@ -1,4 +1,5 @@
 using System;
+using Newtonsoft.Json;
 
 namespace ETLActors.Shared.State
 {
@@ -14,6 +15,7 @@ namespace ETLActors.Shared.State
         {
         }
 
+        [JsonConstructor]
         public Order(long timestamp, Address address, Guid guid, Product product)
         {
             Timestamp = timestamp;
