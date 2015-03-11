@@ -1,21 +1,26 @@
 ﻿using System;
 using Akka.Actor;
+using Topshelf;
 
 
 namespace ETLActors
 {
     class Program
     {
-        public static ActorSystem EtlActorSystem;
-
-        static void Main(string[] args)
+        static int Main(string[] args)
         {
-            EtlActorSystem = ActorSystem.Create("EtlActorSystem");
-            
-            Console.WriteLine("hello!");
+            return (int) HostFactory.Run(x =>
+            {
+                x.SetServiceName("ETL");
+                x.SetDisplayName("Akka.NET ETL - Central");
+                x.SetDescription("Akka.NET Streaming ETL Cluster Demo");
 
-            EtlActorSystem.AwaitTermination();
-
+                x.UseAssemblyInfoForServiceInfo();
+                x.RunAsLocalSystem();
+                x.StartAutomatically();
+                x.Service<CentralETLService>();
+                x.EnableServiceRecovery(r => r.RestartService(1));
+            });
         }
     }
 }

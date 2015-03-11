@@ -1,6 +1,6 @@
-﻿using ETLActors.State;
+using ETLActors.Shared.State;
 
-namespace ETLActors.Commands
+namespace ETLActors.Shared.Commands
 {
     #region Payment messages
 

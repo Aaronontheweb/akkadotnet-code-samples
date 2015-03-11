@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ETLActors
+namespace ETLActors.Shared.State
 {
     public class Address
     {

@@ -1,6 +1,6 @@
-﻿using System;
+using System;
 
-namespace ETLActors.State
+namespace ETLActors.Shared.State
 {
     public class MarketingCampaign : IIdentifiable {
         public MarketingCampaign(decimal cost, Guid id)

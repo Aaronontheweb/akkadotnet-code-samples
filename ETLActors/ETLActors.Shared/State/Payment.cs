@@ -1,6 +1,6 @@
-﻿using System;
+using System;
 
-namespace ETLActors.State
+namespace ETLActors.Shared.State
 {
     public class Payment : IDataEvent {
         public Payment(decimal amount, int last4, int binNumber, long timestamp, Guid id)

@@ -1,6 +1,6 @@
 using System;
 
-namespace ETLActors.State
+namespace ETLActors.Shared.State
 {
     public class View : IDataEvent {
         public Guid Id { get; private set; }
