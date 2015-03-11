@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using Akka.Actor;
+using Akka.Dispatch.SysMsg;
 using ETLActors.Shared.Commands;
 
 namespace ETLActors.Actors
 {
-    class PaymentByZipCoordinatorActor : ReceiveActor
+    class StatsByZipCoordinatorActor : ReceiveActor
     {
+        // map zipCode => actor
         private Dictionary<String, ActorRef> _workers;
 
-        public PaymentByZipCoordinatorActor()
+        public StatsByZipCoordinatorActor()
         {
             _workers = new Dictionary<string, ActorRef>();
             MakeReceives();
@@ -17,8 +19,14 @@ namespace ETLActors.Actors
 
         private void MakeReceives()
         {
-            // sender of this zip code needs to be added to workers dict
-            Receive<PaymentByZipWorkerActor.MyZip>(zip =>
+            Receive<OrderMessage>(message =>
+            {
+                var worker = FindOrCreateZipActor(message.Order.Address.PostalCode);
+                worker.Tell(message);
+            });
+
+            // sender of this zip code needs to be added to workers dict            
+            Receive<StatsByZipWorkerActor.MyZip>(zip =>
             {
                _workers[zip.Zip] = Sender;
             });
@@ -34,7 +42,7 @@ namespace ETLActors.Actors
             else if (Context.Child(zipCode) == ActorRef.Nobody)
             {
                 // create worker
-                var worker = Context.ActorOf(Props.Create(() => new PaymentByZipWorkerActor(zipCode)), zipCode);
+                var worker = Context.ActorOf(Props.Create(() => new StatsByZipWorkerActor(zipCode)), zipCode);
                 _workers[zipCode] = worker;
                 return worker;
             }
@@ -53,7 +61,7 @@ namespace ETLActors.Actors
             var children = Context.GetChildren();
             foreach (var child in children)
             {
-                child.Tell(new PaymentByZipWorkerActor.IdentifyZip());
+                child.Tell(new StatsByZipWorkerActor.IdentifyZip());
             }
         }
 

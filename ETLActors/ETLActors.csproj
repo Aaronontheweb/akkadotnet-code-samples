@@ -37,9 +37,6 @@
     <Reference Include="Akka">
       <HintPath>packages\Akka.0.8.0\lib\net45\Akka.dll</HintPath>
     </Reference>
-    <Reference Include="Faker">
-      <HintPath>packages\faker-csharp.1.2.0\lib\net4\Faker.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>packages\Newtonsoft.Json.6.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -57,14 +54,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Actors\CountActorBase.cs" />
     <Compile Include="Actors\MessageGeneratorActor.cs" />
     <Compile Include="Actors\OrderCommanderActor.cs" />
-    <Compile Include="Actors\PageviewCommanderActor.cs" />
-    <Compile Include="Actors\PaymentByProductCoordinatorActor.cs" />
-    <Compile Include="Actors\PaymentByTimeCoordinatorActor.cs" />
-    <Compile Include="Actors\PaymentByZipCoordinatorActor.cs" />
-    <Compile Include="Actors\PaymentByZipWorkerActor.cs" />
+    <Compile Include="Actors\StatsByProductCoordinatorActor.cs" />
+    <Compile Include="Actors\StatsByTimeCoordinatorActor.cs" />
+    <Compile Include="Actors\StatsByZipCoordinatorActor.cs" />
+    <Compile Include="Actors\StatsByZipWorkerActor.cs" />
     <Compile Include="Actors\PublisherActor.cs" />
+    <Compile Include="Actors\StatsTotalActor.cs" />
     <Compile Include="Actors\SubscriberActor.cs" />
     <Compile Include="CentralETLService.cs" />
     <Compile Include="Program.cs" />

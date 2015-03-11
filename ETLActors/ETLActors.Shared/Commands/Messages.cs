@@ -2,65 +2,17 @@ using ETLActors.Shared.State;
 
 namespace ETLActors.Shared.Commands
 {
-    #region Payment messages
-
-    /// <summary>
-    /// Base class for <see cref="Payment"/>-related messages.
-    /// </summary>
-    public class PaymentMessage
+    public class BaseMessage
     {
-        public Payment Payment { get; private set; }
-
-        public PaymentMessage(Payment payment)
-        {
-            Payment = payment;
-        }
-
     }
 
-    /// <summary>
-    /// Signal to refund a <see cref="Payment"/>.
-    /// </summary>
-    public class RefundPayment : PaymentMessage
-    {
-        public RefundPayment(Payment payment)
-            : base(payment)
-        {
-        }
-    }
-
-    /// <summary>
-    /// Signal to capture a <see cref="Payment"/>.
-    /// </summary>
-    public class CapturePayment : PaymentMessage
-    {
-        public CapturePayment(Payment payment)
-            : base(payment)
-        {
-        }
-    }
-    #endregion
-
-    #region Pageview messages
-    /// <summary>
-    /// Signals to log a pageview for a given <see cref="Product" />.
-    /// </summary>
-    public class LogPageview
-    {
-        public LogPageview(Pageview pageview)
-        {
-            Pageview = pageview;
-        }
-
-        public Pageview Pageview { get; private set; }
-    }
-    #endregion
+    public enum MessageTypes { CreateOrder, CancelOrder}
 
     #region Order messages
     /// <summary>
     /// Base class for <see cref="Order"/>-related messages.
     /// </summary>
-    public class OrderMessage
+    public class OrderMessage : BaseMessage
     {
         public OrderMessage(Order order)
         {
