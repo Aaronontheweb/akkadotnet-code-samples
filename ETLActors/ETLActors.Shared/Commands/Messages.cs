@@ -43,7 +43,7 @@ namespace ETLActors.Shared.Commands
 
     #region Pageview messages
     /// <summary>
-    /// Signals to log a pageview for a given <see cref="ProductType" />.
+    /// Signals to log a pageview for a given <see cref="Product" />.
     /// </summary>
     public class LogPageview
     {

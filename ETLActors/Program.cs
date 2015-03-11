@@ -1,7 +1,4 @@
-﻿using System;
-using Akka.Actor;
-using Topshelf;
-
+﻿using Topshelf;
 
 namespace ETLActors
 {

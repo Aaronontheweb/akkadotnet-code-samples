@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Akka.Actor;
+using Akka.Routing;
 using ETLActors.Shared.Commands;
 
 namespace ETLActors.Actors
@@ -12,11 +9,18 @@ namespace ETLActors.Actors
     {
         protected override void PreStart()
         {
+            // central looks at high-level interfaces to see which actors to subscribe to what
+
             // subscribe payment commander to all payment messages
-            var pmtCommander = Context.System.ActorOf<PaymentCommanderActor>("PaymentCommander");
+            var pmtCommander = Context.System.ActorOf(Props.Empty.WithRouter(FromConfig.Instance), "PaymentCommander");
             Context.System.EventStream.Subscribe(pmtCommander, typeof(PaymentMessage));
 
-            // subscribe order commander to all order messages
+            var pmtByZipCoord = Context.System.ActorOf<PaymentByZipCoordinatorActor>("PaymentByZipCoordinator");
+            var pmtByProductCoord = Context.System.ActorOf<PaymentByProductCoordinatorActor>("PaymentByProductCoordinator");
+            var pmtByTimeCoord = Context.System.ActorOf<PaymentByTimeCoordinatorActor>("PaymentByTimeCoordinator");
+
+
+            // subscribe Order commander to all Order messages
             var orderCommander = Context.System.ActorOf<OrderCommanderActor>("OrderCommander");
             Context.System.EventStream.Subscribe(orderCommander, typeof(OrderMessage));
 
@@ -24,7 +28,7 @@ namespace ETLActors.Actors
             var pageviewCommander = Context.System.ActorOf<PageviewCommanderActor>("PageviewCommander");
             Context.System.EventStream.Subscribe(pageviewCommander, typeof(LogPageview));
 
-            Console.WriteLine("SubscriberActor done booting up");
+            Console.WriteLine("SubscriberActor ready");
         }
     }
 }

@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Configuration;
 using Akka.Actor;
+using Akka.Configuration.Hocon;
+using Akka.Routing;
 using ETLActors.Actors;
-using ETLActors.Shared.Commands;
-using ETLActors.Shared.State;
 using Topshelf;
-using Address = ETLActors.Shared.State.Address;
 
 namespace ETLActors
 {
@@ -19,12 +14,13 @@ namespace ETLActors
         protected ActorRef PublisherActor;
         protected ActorRef MessageGeneratorActor;
 
-
         public bool Start(HostControl hostControl)
         {
-            ETLSystem = ActorSystem.Create("ETLActorSystem");
+            var section = (AkkaConfigurationSection)ConfigurationManager.GetSection("akka");
+            var config = section.AkkaConfig;
+            ETLSystem = ActorSystem.Create("ETLActorSystem", config);
             SubscriberActor = ETLSystem.ActorOf(Props.Create<SubscriberActor>(), "SubscriberActor");
-            PublisherActor = ETLSystem.ActorOf(Props.Create<PublisherActor>(), "PublisherActor");
+            PublisherActor = ETLSystem.ActorOf(Props.Create<PublisherActor>().WithRouter(FromConfig.Instance), "PublisherActor");
             MessageGeneratorActor = ETLSystem.ActorOf(Props.Create<MessageGeneratorActor>(PublisherActor), "MessageGeneratorActor");
             return true;
         }

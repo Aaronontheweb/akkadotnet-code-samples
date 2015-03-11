@@ -5,26 +5,21 @@ namespace ETLActors.Shared.State
     public class Order : IDataEvent
     {
         public long Timestamp { get; private set; }
-        public decimal Total { get; private set; }
         public Guid Id { get; private set; }
-        public Customer Customer { get; private set; }
-        public Payment Payment { get; private set; }
+        public Payment Payment { get; set; }
         public Address Address { get; private set; }
-        public MarketingCampaign MarketingCampaign { get; private set; }
+        public Product Product { get; private set; }
 
-        public Order(decimal total, Customer customer, Payment payment, Address address, MarketingCampaign marketingCampaign) : this(DateTime.UtcNow.Ticks, total, customer, payment, address, marketingCampaign, Guid.NewGuid())
+        public Order(Address address, Product product) : this(DateTime.UtcNow.Ticks, address, Guid.NewGuid(), product)
         {
         }
 
-        public Order(long timestamp, decimal total, Customer customer, Payment payment, Address address, MarketingCampaign marketingCampaign, Guid guid)
+        public Order(long timestamp, Address address, Guid guid, Product product)
         {
             Timestamp = timestamp;
-            Total = total;
-            Customer = customer;
-            Payment = payment;
             Address = address;
-            MarketingCampaign = marketingCampaign;
             Id = guid;
+            Product = product;
         }
 
     }
