@@ -63,7 +63,7 @@ namespace ETLActors.Shared
 
         public static Payment MakePayment(Guid orderId)
         {
-            var payment = new Payment(Numbers.Decimal(0, 5000), orderId);
+            var payment = new Payment(Math.Max(Numbers.Decimal(0, 5000), 0), orderId);
             return payment;
         }
     }

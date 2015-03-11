@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using Akka.Actor;
+using Akka.Routing;
 using ETLActors.Shared;
 
-namespace ETLActors.Actors
+namespace ETLFrontend
 {
     class MessageGeneratorActor : UntypedActor
     {
@@ -19,6 +21,11 @@ namespace ETLActors.Actors
         protected override void OnReceive(object message)
         {
             // send fake data into the message bus
+            var res = _publisherActor.Ask<Routees>(new GetRoutees()).Result.Members.Cast<ActorSelectionRoutee>().ToList();
+            foreach (var i in res)
+            {
+                Console.WriteLine(i.Selection.ToString());
+            }
             _publisherActor.Tell(FakeData.MakeMessage());
         }
 
