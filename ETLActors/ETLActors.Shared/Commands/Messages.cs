@@ -41,7 +41,7 @@ namespace ETLActors.Shared.Commands
     }
     #endregion
 
-    #region View messages
+    #region Pageview messages
     /// <summary>
     /// Signals to log a pageview for a given <see cref="ProductType" />.
     /// </summary>

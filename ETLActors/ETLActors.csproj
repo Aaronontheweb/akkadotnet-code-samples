@@ -48,8 +48,18 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="Topshelf">
+      <HintPath>packages\Topshelf.3.1.4\lib\net40-full\Topshelf.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Actors\MessageGeneratorActor.cs" />
+    <Compile Include="Actors\OrderCommanderActor.cs" />
+    <Compile Include="Actors\PageviewCommanderActor.cs" />
+    <Compile Include="Actors\PaymentCommanderActor.cs" />
+    <Compile Include="Actors\PublisherActor.cs" />
+    <Compile Include="Actors\SubscriberActor.cs" />
+    <Compile Include="CentralETLService.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -63,6 +73,7 @@
       <Name>ETLActors.Shared</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

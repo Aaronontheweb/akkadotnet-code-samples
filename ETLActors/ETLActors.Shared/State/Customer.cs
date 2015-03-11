@@ -9,6 +9,10 @@ namespace ETLActors.Shared.State
             Id = id;
         }
 
+        public Customer() : this(Guid.NewGuid())
+        {
+        }
+
         public Guid Id { get; private set; }
 
         // should this setter be public? use other methods to change list?

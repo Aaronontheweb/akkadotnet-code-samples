@@ -2,8 +2,16 @@
 
 namespace ETLActors.Shared.State
 {
+    /// <summary>
+    /// Represents an <see cref="Address"/>.
+    /// </summary>
     public class Address
     {
+        // TODO remove
+        public Address() : this("andrew", "1261 granville", "", "la", "CA", "90025", "US", "3108965198")
+        {
+        }
+
         public String Name { get; private set; }
         public String Line1 { get; private set; }
         public String Line2 { get; private set; }
