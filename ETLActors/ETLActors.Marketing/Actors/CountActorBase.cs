@@ -1,4 +1,4 @@
-﻿namespace ETLActors.Actors
+﻿namespace ETLActors.Marketing
 {
     class CountActorBase
     {

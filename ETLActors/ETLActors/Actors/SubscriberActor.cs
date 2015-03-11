@@ -1,5 +1,6 @@
 ﻿using System;
 using Akka.Actor;
+using Akka.Dispatch.SysMsg;
 using Akka.Routing;
 using ETLActors.Shared.Commands;
 
@@ -7,20 +8,46 @@ namespace ETLActors.Actors
 {
     public class SubscriberActor : ReceiveActor
     {
-        protected override void PreStart()
+        public SubscriberActor()
         {
-            // create coordinators to process message types
-            Context.System.ActorOf<StatsByZipCoordinatorActor>("StatsByZipCoordinator");
-            Context.System.ActorOf<StatsByProductCoordinatorActor>("StatsByProductCoordinator");
-            Context.System.ActorOf<StatsByTimeCoordinatorActor>("StatsByTimeCoordinator");
-            Context.System.ActorOf<StatsTotalActor>("StatsTotalActor");
+            Ready();
+        }
 
+        private void Ready()
+        {
+            Receive<SubscribeToTopics>(sub =>
+            {
+                foreach (var type in sub.Types)
+                {
+                    Console.WriteLine("Subscribing {0} to messages of type {1}", Sender, type);
+                    Context.System.EventStream.Subscribe(Sender, type);
+                }
 
-            // subscribe OrderCommander to all Order messages
-            var orderCommander = Context.System.ActorOf(Props.Empty.WithRouter(FromConfig.Instance), "OrderCommander");
-            Context.System.EventStream.Subscribe(orderCommander, typeof(OrderMessage));
+                //susbscribe to deathwatch
+                Context.Watch(Sender);
+            });
 
-            Console.WriteLine("SubscriberActor ready");
+            Receive<UnsubscribeFromTopics>(unsub =>
+            {
+                foreach (var type in unsub.Types)
+                {
+                    Console.WriteLine("Unsubscribing {0} from messages of type {1}", Sender, type);
+                    Context.System.EventStream.Unsubscribe(Sender, type);
+                }
+            });
+
+            Receive<UnsusbscribeFromAll>(unsub =>
+            {
+                Console.WriteLine("Unsubscribing {0} from ALL messages", Sender);
+                Context.Unwatch(Sender);
+                Context.System.EventStream.Unsubscribe(Sender);
+            });
+
+            Receive<DeathWatchNotification>(deathWatch =>
+            {
+                Console.WriteLine("Unsubscribing {0} from ALL messages because DEATHWATCH.", deathWatch.Actor);
+                Context.System.EventStream.Unsubscribe(deathWatch.Actor);
+            });
         }
     }
 }

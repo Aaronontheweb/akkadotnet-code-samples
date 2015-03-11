@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using Akka.Actor;
-using Akka.Dispatch.SysMsg;
 using ETLActors.Shared.Commands;
 
-namespace ETLActors.Actors
+namespace ETLActors.Marketing
 {
     class StatsByZipCoordinatorActor : ReceiveActor
     {
         // map zipCode => actor
-        private Dictionary<String, ActorRef> _workers;
+        private Dictionary<string, ActorRef> _workers;
 
         public StatsByZipCoordinatorActor()
         {
