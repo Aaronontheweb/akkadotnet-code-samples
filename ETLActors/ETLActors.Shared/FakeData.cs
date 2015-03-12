@@ -17,6 +17,7 @@ namespace ETLActors.Shared
         public readonly static IList<string> Cities = new List<string>() { "Los Angeles", "Santa Monica", "San Diego", "San Francisco" };
         public readonly static IList<string> States = new List<string>() { "CA", "VA", "NY", "VT" };
         public readonly static IList<string> Counties = new List<string>() { "US", "RU", "CA" };
+        public readonly static IList<string> ZipCodes = new List<string>(){ "90064", "90210", "90401", "92131" };
 
         public static Address MakeAddress()
         {
@@ -25,7 +26,7 @@ namespace ETLActors.Shared
                 Streets.GetRandom(),
                 Cities.GetRandom(),
                 States.GetRandom(),
-                Numbers.Int(10000, 99999).ToString(),
+                ZipCodes.GetRandom(),
                 Counties.GetRandom());
         }
 
@@ -63,7 +64,7 @@ namespace ETLActors.Shared
 
         public static Payment MakePayment(Guid orderId)
         {
-            var payment = new Payment(Math.Max(Numbers.Decimal(0, 5000), 0), orderId);
+            var payment = new Payment(Convert.ToDecimal(Math.Max(Numbers.Double(0, 2.99D), 0)), orderId);
             return payment;
         }
     }

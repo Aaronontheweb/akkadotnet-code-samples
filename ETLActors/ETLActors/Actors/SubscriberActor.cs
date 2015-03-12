@@ -24,7 +24,7 @@ namespace ETLActors.Actors
                 }
 
                 //susbscribe to deathwatch
-                Context.Watch(Sender);
+                Context.Watch(sub.Subscriber);
             });
 
             Receive<UnsubscribeFromTopics>(unsub =>

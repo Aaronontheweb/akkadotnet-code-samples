@@ -28,7 +28,7 @@ namespace ETLActors.Marketing
             ETLSystem.ActorOf<StatsByTimeCoordinatorActor>("StatsByTimeCoordinator");
             ETLSystem.ActorOf<StatsTotalActor>("StatsTotalActor");
 
-            var centralRouter = ETLSystem.ActorOf(Props.Empty.WithRouter(FromConfig.Instance), "PublisherRouter");
+            var centralRouter = ETLSystem.ActorOf(Props.Empty.WithRouter(FromConfig.Instance), "SubscriberRouter");
             // subscribe OrderCommander to all Order messages
             var orderCommander = ETLSystem.ActorOf(Props.Empty.WithRouter(FromConfig.Instance), "OrderCommander");
             ETLSystem.Scheduler.Schedule(TimeSpan.FromSeconds(1.5), TimeSpan.FromSeconds(10), centralRouter,

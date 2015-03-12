@@ -32,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Akka">
+      <HintPath>..\packages\Akka.1.0.0\lib\net45\Akka.dll</HintPath>
+    </Reference>
     <Reference Include="Faker">
       <HintPath>..\packages\faker-csharp.1.2.0\lib\net4\Faker.dll</HintPath>
     </Reference>

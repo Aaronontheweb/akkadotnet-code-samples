@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using ETLActors.Shared.Commands;
 using ETLActors.Shared.State;
@@ -37,14 +38,14 @@ namespace ETLActors.Marketing.Actors
             var currentInterval = IntervalCalculator(DateTime.UtcNow.Ticks);
             foreach (var interval in DistinctSumsPerInterval)
             {
-                Console.WriteLine("Per-{0} {1} SUM for {2}: {3}", MetricsDescription, AggregationInterval, interval.Key,
-                    interval.Value);
+                Console.WriteLine("Per-{0} {1} SUM for {2}: {3}", AggregationInterval, MetricsDescription, interval.Key.ToShortTimeString(),
+                    interval.Value.ToString("C", CultureInfo.CurrentCulture));
             }
 
             //remove previous intervals
-            DistinctSumsPerInterval =
-                DistinctSumsPerInterval.Where(x => x.Key != currentInterval)
-                    .ToDictionary(key => key.Key, v => v.Value);
+            //DistinctSumsPerInterval =
+            //    DistinctSumsPerInterval.Where(x => x.Key != currentInterval)
+            //        .ToDictionary(key => key.Key, v => v.Value);
         }
 
         protected void SumOrder(Order order)

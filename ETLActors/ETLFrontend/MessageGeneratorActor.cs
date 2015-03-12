@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading;
 using Akka.Actor;
 using Akka.Routing;
+using Akka.Util.Internal;
 using ETLActors.Shared;
 
 namespace ETLFrontend
@@ -11,6 +12,7 @@ namespace ETLFrontend
     {
         private ActorRef _publisherActor;
         private CancellationTokenSource _publishTask;
+        private AtomicCounter _printAttempt = new AtomicCounter(0);
 
         public MessageGeneratorActor(ActorRef publisherActor)
         {
@@ -21,11 +23,7 @@ namespace ETLFrontend
         protected override void OnReceive(object message)
         {
             // send fake data into the message bus
-            var res = _publisherActor.Ask<Routees>(new GetRoutees()).Result.Members.Cast<ActorSelectionRoutee>().ToList();
-            foreach (var i in res)
-            {
-                Console.WriteLine(i.Selection.ToString());
-            }
+            Console.WriteLine("Event" + _printAttempt.GetAndAdd(1));
             _publisherActor.Tell(FakeData.MakeMessage());
         }
 

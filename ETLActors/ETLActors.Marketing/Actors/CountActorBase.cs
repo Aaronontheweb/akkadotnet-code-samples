@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading;
 using Akka.Actor;
 using ETLActors.Shared;
-using ETLActors.Shared.Commands;
 using ETLActors.Shared.State;
 
 namespace ETLActors.Marketing.Actors
@@ -38,14 +37,9 @@ namespace ETLActors.Marketing.Actors
             var currentInterval = IntervalCalculator(DateTime.UtcNow.Ticks);
             foreach (var interval in DistinctCountsPerInterval)
             {
-                Console.WriteLine("Per-{0} {1} COUNT for {2}: {3}", MetricsDescription, AggregationInterval, interval.Key,
+                Console.WriteLine("Per-{0} {1} COUNT for {2}: {3}", MetricsDescription, AggregationInterval, interval.Key.ToShortTimeString(),
                     interval.Value);
             }
-
-            //remove previous intervals
-            DistinctCountsPerInterval =
-                DistinctCountsPerInterval.Where(x => x.Key != currentInterval)
-                    .ToDictionary(key => key.Key, v => v.Value);
         }
 
         protected void CountEvent(IDataEvent @event)
@@ -117,57 +111,5 @@ namespace ETLActors.Marketing.Actors
         }
 
         #endregion
-    }
-
-    public class OrderSumActorBase : CountActorBase
-    {
-        protected Dictionary<DateTime, decimal> DistinctSumsPerInterval;
-
-        public OrderSumActorBase(TimeInterval aggregationInterval, string metricsDescription) 
-            : base(aggregationInterval, metricsDescription)
-        {
-            DistinctSumsPerInterval = new Dictionary<DateTime, decimal>();
-            Ready();
-        }
-
-        private void Ready()
-        {
-            Receive<OrderMessage>(orderMessage =>
-            {
-                CountEvent(orderMessage.Order);
-                SumOrder(orderMessage.Order);
-            });
-
-            Receive<PublishStatsTick>(tick =>
-            {
-                PublishCounts();
-                PublishSums();
-            });
-        }
-
-        protected void PublishSums()
-        {
-            var currentInterval = IntervalCalculator(DateTime.UtcNow.Ticks);
-            foreach (var interval in DistinctSumsPerInterval)
-            {
-                Console.WriteLine("Per-{0} {1} SUM for {2}: {3}", MetricsDescription, AggregationInterval, interval.Key,
-                    interval.Value);
-            }
-
-            //remove previous intervals
-            DistinctSumsPerInterval =
-                DistinctSumsPerInterval.Where(x => x.Key != currentInterval)
-                    .ToDictionary(key => key.Key, v => v.Value);
-        }
-
-        protected void SumOrder(Order order)
-        {
-            var interval = IntervalCalculator(order.Timestamp);
-            if (!DistinctSumsPerInterval.ContainsKey(interval))
-            {
-                DistinctSumsPerInterval[interval] = 0;
-            }
-            DistinctSumsPerInterval[interval] = DistinctSumsPerInterval[interval] + order.Payment.Amount;
-        }
     }
 }
