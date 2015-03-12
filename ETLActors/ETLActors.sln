@@ -18,6 +18,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ETLFrontend", "ETLFrontend\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ETLActors.Marketing", "ETLActors.Marketing\ETLActors.Marketing.csproj", "{FCB62322-CD64-4AF1-9CDB-BF44B35BE0BC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ETLActors.Finance", "ETLActors.Finance\ETLActors.Finance.csproj", "{E4A9ED07-F684-4795-A9C7-912FED607905}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +42,10 @@ Global
 		{FCB62322-CD64-4AF1-9CDB-BF44B35BE0BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FCB62322-CD64-4AF1-9CDB-BF44B35BE0BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FCB62322-CD64-4AF1-9CDB-BF44B35BE0BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E4A9ED07-F684-4795-A9C7-912FED607905}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4A9ED07-F684-4795-A9C7-912FED607905}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4A9ED07-F684-4795-A9C7-912FED607905}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4A9ED07-F684-4795-A9C7-912FED607905}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

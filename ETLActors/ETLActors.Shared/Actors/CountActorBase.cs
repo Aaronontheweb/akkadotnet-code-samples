@@ -35,7 +35,7 @@ namespace ETLActors.Shared
             var currentInterval = IntervalCalculator(DateTime.UtcNow.Ticks);
             foreach (var interval in DistinctCountsPerInterval)
             {
-                Console.WriteLine("Per-{0} {1} COUNT for {2}: {3}", MetricsDescription, AggregationInterval, interval.Key.ToShortTimeString(),
+                Console.WriteLine("Per-{0} {1} COUNT for {2}: {3}", AggregationInterval, MetricsDescription, interval.Key.ToShortTimeString(),
                     interval.Value);
             }
         }

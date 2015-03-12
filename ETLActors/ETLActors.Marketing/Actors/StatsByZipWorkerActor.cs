@@ -1,5 +1,6 @@
 ﻿using System;
 using Akka.Actor;
+using ETLActors.Shared;
 using ETLActors.Shared.Commands;
 using ETLActors.Shared.State;
 
