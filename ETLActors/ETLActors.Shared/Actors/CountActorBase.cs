@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using Akka.Actor;
-using ETLActors.Shared;
 using ETLActors.Shared.State;
 
-namespace ETLActors.Marketing.Actors
+namespace ETLActors.Shared
 {
     public abstract class CountActorBase : ReceiveActor
     {

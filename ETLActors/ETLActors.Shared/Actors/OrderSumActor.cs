@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using ETLActors.Shared.Commands;
 using ETLActors.Shared.State;
 
-namespace ETLActors.Marketing.Actors
+namespace ETLActors.Shared
 {
     public class OrderSumActor : CountActorBase
     {
