@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Akka.Actor;
 using ETLActors.Shared.Commands;
 
-namespace ETLActors.Marketing
+namespace ETLActors.Marketing.Actors
 {
     class StatsByZipCoordinatorActor : ReceiveActor
     {

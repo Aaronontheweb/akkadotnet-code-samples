@@ -49,6 +49,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\Messages.cs" />
+    <Compile Include="Commands\Subscriptions.cs" />
+    <Compile Include="DateTimeExtensions.cs" />
     <Compile Include="FakeData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="State\Address.cs" />

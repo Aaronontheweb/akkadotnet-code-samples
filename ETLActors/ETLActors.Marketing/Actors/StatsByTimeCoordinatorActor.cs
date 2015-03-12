@@ -1,6 +1,6 @@
 ﻿using Akka.Actor;
 
-namespace ETLActors.Marketing
+namespace ETLActors.Marketing.Actors
 {
     class StatsByTimeCoordinatorActor : ReceiveActor
     {

@@ -3,7 +3,7 @@ using Akka.Actor;
 using ETLActors.Shared.Commands;
 using ETLActors.Shared.State;
 
-namespace ETLActors.Marketing
+namespace ETLActors.Marketing.Actors
 {
     class StatsByZipWorkerActor : ReceiveActor
     {
@@ -24,26 +24,43 @@ namespace ETLActors.Marketing
         }
         #endregion
 
+        protected ActorRef CancelledOrders;
+        protected ActorRef CompletedOrders;
+
         public StatsByZipWorkerActor(string zipCode)
         {
             _zipCode = zipCode;
 
             Receive<IdentifyZip>(msg => Sender.Tell(new MyZip(_zipCode)));
-            Receive<CreateOrder>(message => ProcessNewOrder(message.Order));
-            Receive<CancelOrder>(message => ProcessCancelOrder(message.Order));
-
-
+            Receive<CreateOrder>(message => ProcessNewOrder(message));
+            Receive<CancelOrder>(message => ProcessCancelOrder(message));
         }
 
-        private void ProcessCancelOrder(Order order)
+        protected override void PreStart()
         {
-            Console.WriteLine("zip worker {0} received CANCEL order, amount: {1}", _zipCode, order.Payment.Amount);
-            
+            CancelledOrders =
+                Context.ActorOf(
+                    Props.Create(
+                        () =>
+                            new OrderSumActor(CountActorBase.TimeInterval.Hour,
+                                string.Format("CANCELLED ORDERS in {0}", _zipCode))));
+
+            CompletedOrders =
+               Context.ActorOf(
+                   Props.Create(
+                       () =>
+                           new OrderSumActor(CountActorBase.TimeInterval.Hour,
+                               string.Format("COMPLETED ORDERS in {0}", _zipCode))));
         }
 
-        private void ProcessNewOrder(Order order)
+        private void ProcessCancelOrder(CancelOrder order)
         {
-            Console.WriteLine("zip worker {0} received new order, amount: {1}", _zipCode, order.Payment.Amount);
+           CancelledOrders.Tell(order);
+        }
+
+        private void ProcessNewOrder(CreateOrder order)
+        {
+            CompletedOrders.Tell(order);
         }
     }
 }

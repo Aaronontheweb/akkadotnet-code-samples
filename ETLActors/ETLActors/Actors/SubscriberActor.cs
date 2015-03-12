@@ -19,8 +19,8 @@ namespace ETLActors.Actors
             {
                 foreach (var type in sub.Types)
                 {
-                    Console.WriteLine("Subscribing {0} to messages of type {1}", Sender, type);
-                    Context.System.EventStream.Subscribe(Sender, type);
+                    Console.WriteLine("Subscribing {0} to messages of type {1}", sub.Subscriber, type);
+                    Context.System.EventStream.Subscribe(sub.Subscriber, type);
                 }
 
                 //susbscribe to deathwatch
@@ -31,16 +31,16 @@ namespace ETLActors.Actors
             {
                 foreach (var type in unsub.Types)
                 {
-                    Console.WriteLine("Unsubscribing {0} from messages of type {1}", Sender, type);
-                    Context.System.EventStream.Unsubscribe(Sender, type);
+                    Console.WriteLine("Unsubscribing {0} from messages of type {1}", unsub.Subscriber, type);
+                    Context.System.EventStream.Unsubscribe(unsub.Subscriber, type);
                 }
             });
 
             Receive<UnsusbscribeFromAll>(unsub =>
             {
-                Console.WriteLine("Unsubscribing {0} from ALL messages", Sender);
-                Context.Unwatch(Sender);
-                Context.System.EventStream.Unsubscribe(Sender);
+                Console.WriteLine("Unsubscribing {0} from ALL messages", unsub.Subscriber);
+                Context.Unwatch(unsub.Subscriber);
+                Context.System.EventStream.Unsubscribe(unsub.Subscriber);
             });
 
             Receive<DeathWatchNotification>(deathWatch =>
