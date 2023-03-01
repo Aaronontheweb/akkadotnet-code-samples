@@ -1,0 +1,169 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: sqlserver
+spec:
+  ports:
+    - name: sqlserver
+      port: 1544
+      protocol: TCP
+      targetPort: 1433
+  selector:
+    app: sqlserver
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sqlserver
+  labels:
+    app: sqlserver
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sqlserver
+  template:
+    metadata:
+      labels:
+        app: sqlserver
+    spec:
+      containers:
+      - name: sqlserver
+        image: akkadotnet.sqlserver:0.1.0
+        env:
+          - name: ACCEPT_EULA
+            value: "Y"
+          - name: SA_PASSWORD
+            value: "yourStrong(!)Password"
+        ports:
+        - containerPort: 1433
+          name: sqlserver
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: host
+  labels:
+    app: host
+spec:
+  clusterIP: None
+  ports:
+    - port: 8558
+      name: management
+    - port: 5055
+      name: akka-remote
+  selector:
+    app: host
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: host
+  labels:
+    app: host
+    cluster: sqlsharding
+spec:
+  serviceName: host
+  replicas: 3
+  selector:
+    matchLabels:
+      app: host
+  template:
+    metadata:
+      labels:
+        app: host
+        cluster: sqlsharding
+    spec:
+      terminationGracePeriodSeconds: 35
+      containers:
+      - name: host
+        image: sqlsharding.host:0.1.0
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: Akka__ClusterIp
+          value: "$(POD_NAME).host"
+        - name: Akka_ClusterPort
+          value: "5055"
+        - name: ConnectionStrings__AkkaSqlConnection
+          value: "Server=sqlserver,1533; Database=Akka; User Id=sa; Password=yourStrong(!)Password;"
+        ports:
+          - containerPort: 8558
+            protocol: TCP
+            name: management
+          - containerPort: 5055
+            protocol: TCP
+            name: akka-remote
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-http
+  labels:
+    app: frontend
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 8999
+    targetPort: 80
+  selector:
+    app: frontend
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-akka
+  labels:
+    app: frontend
+spec:
+  clusterIP: None
+  ports:
+    - port: 8558
+      name: management
+    - port: 5055
+      name: akka-remote
+  selector:
+    app: frontend
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: frontend
+  labels:
+    app: frontend
+    cluster: sqlsharding
+spec:
+  serviceName: frontend
+  replicas: 3
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+        cluster: sqlsharding
+    spec:
+      terminationGracePeriodSeconds: 35
+      containers:
+      - name: host
+        image: sqlsharding.web:0.1.0
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: Akka__ClusterIp
+          value: "$(POD_NAME).frontend"
+        - name: Akka__ClusterPort
+          value: "5055"
+        ports:
+          - containerPort: 8558
+            protocol: TCP
+            name: management
+          - containerPort: 5055
+            protocol: TCP
+            name: akka-remote

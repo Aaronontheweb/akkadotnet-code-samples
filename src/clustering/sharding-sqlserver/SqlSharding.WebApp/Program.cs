@@ -23,7 +23,7 @@ var seeds = akkaSection.GetValue<string[]>("ClusterSeeds", new []{ "akka.tcp://S
 builder.Services.AddRazorPages();
 builder.Services.AddAkka("SqlSharding", (configurationBuilder, provider) =>
 {
-    configurationBuilder.WithRemoting(hostName, port)
+    configurationBuilder.WithRemoting(hostname: "0.0.0.0", publicHostname:hostName, port:port)
         .AddAppSerialization()
         .WithClustering(new ClusterOptions()
             { Roles = new[] { "Web" }, SeedNodes = seeds })

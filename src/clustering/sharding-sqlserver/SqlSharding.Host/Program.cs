@@ -42,8 +42,8 @@ var builder = new HostBuilder()
         services.AddAkka("SqlSharding", (configurationBuilder, provider) =>
         {
             configurationBuilder
-                .WithRemoting(hostName, port)
-                .AddAppSerialization()
+                .WithRemoting(hostname: "0.0.0.0", publicHostname:hostName, port:port)
+                    .AddAppSerialization()
                 .WithClustering(new ClusterOptions()
                     { Roles = new[] { ProductActorProps.SingletonActorRole }, SeedNodes = seeds })
                 .WithSqlServerPersistence(connectionString)
