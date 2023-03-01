@@ -52,7 +52,9 @@ var builder = new HostBuilder()
                     new ShardOptions()
                     {
                         Role = ProductActorProps.SingletonActorRole, RememberEntities = true,
-                        StateStoreMode = StateStoreMode.Persistence
+                        StateStoreMode = StateStoreMode.Persistence,
+                        SnapshotPluginId = "akka.persistence.snapshot-store.sharding",
+                        JournalPluginId = "akka.persistence.journal.sharding"
                     })
                 .AddHoconFile("sharding.conf", HoconAddMode.Prepend)
                 .AddHocon(@$"akka.persistence.journal.sharding.connection-string = ""{connectionString}""
