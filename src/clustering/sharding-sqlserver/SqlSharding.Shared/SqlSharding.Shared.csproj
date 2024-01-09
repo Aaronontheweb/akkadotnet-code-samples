@@ -16,6 +16,4 @@
     <ItemGroup>
         <Protobuf Include="Serialization\Proto\SqlSharding.Messages.proto" GrpcServices="None" />		
     </ItemGroup>
-
-
 </Project>
